@@ -1,0 +1,27 @@
+services:
+  postgres:
+    image: postgres:15
+    restart: always
+    volumes:
+      - ./pg-data:/var/lib/postgresql/data
+      - ./pg-init:/docker-entrypoint-initdb.d
+    command: postgres -c log_statement=all -c logging_collector=off
+    environment:
+      POSTGRES_PASSWORD: postgrespassword
+    ports:
+      - "5432:5432"
+  graphql-engine:
+    image: hasura/graphql-engine:v2.46.0
+    ports:
+      - "8080:8080"
+    restart: always
+    environment:
+      HASURA_GRAPHQL_METADATA_DATABASE_URL: postgres://postgres:postgrespassword@postgres:5432/postgres
+      PG_DATABASE_URL: postgres://postgres:postgrespassword@postgres:5432/postgres
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true" # set to "false" to disable console
+      HASURA_GRAPHQL_DEV_MODE: "true"
+      HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log, livequery-poller-log, action-handler-log, http-response-log, tracing-log
+      HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
+      HASURA_GRAPHQL_LIVE_QUERIES_MULTIPLEXED_REFETCH_INTERVAL: "50000"
+volumes:
+  db_data:

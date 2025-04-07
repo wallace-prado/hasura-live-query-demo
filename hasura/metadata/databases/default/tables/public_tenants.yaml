@@ -1,0 +1,39 @@
+table:
+  name: tenants
+  schema: public
+array_relationships:
+  - name: customers
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: customers
+          schema: public
+  - name: order_items
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: order_items
+          schema: public
+  - name: orders
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: orders
+          schema: public
+  - name: shipment_items
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: shipment_items
+          schema: public
+  - name: shipments
+    using:
+      foreign_key_constraint_on:
+        column: tenant_id
+        table:
+          name: shipments
+          schema: public

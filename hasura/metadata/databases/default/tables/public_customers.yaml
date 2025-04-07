@@ -1,0 +1,15 @@
+table:
+  name: customers
+  schema: public
+object_relationships:
+  - name: tenant
+    using:
+      foreign_key_constraint_on: tenant_id
+array_relationships:
+  - name: orders
+    using:
+      foreign_key_constraint_on:
+        column: customer_id
+        table:
+          name: orders
+          schema: public
